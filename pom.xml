@@ -6,75 +6,156 @@
 
     <groupId>com.yuqi</groupId>
     <artifactId>jianshu</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler-plugin.source.version>1.8</maven.compiler-plugin.source.version>
+        <maven.compiler-plugin.version>3.8.1</maven.compiler-plugin.version>
+
+        <antlr4.maven-plugin.version>4.5.1</antlr4.maven-plugin.version>
+        <maven-shade-plugin.version>2.4.3</maven-shade-plugin.version>
+        <checkstyle.version>2.17</checkstyle.version>
+
+
+        <lucene.version>8.1.0</lucene.version>
+        <common-io.version>2.6</common-io.version>
+        <hive-exec.version>1.2.1</hive-exec.version>
+        <hadoop-common.version>2.6.0</hadoop-common.version>
+        <antrl.version>4.5.1</antrl.version>
+        <kita.version>1.22</kita.version>
+        <sqlite-jdbc.version>3.20.0</sqlite-jdbc.version>
+        <jbig2-imageio.verion>3.0.0</jbig2-imageio.verion>
+        <hadoop-core.client.version>2.7.7</hadoop-core.client.version>
+        <lombok.version>1.18.8</lombok.version>
+
+        <springboot.dependencies.version>2.1.4.RELEASE</springboot.dependencies.version>
+
+    </properties>
+
+    <modules>
+        <module>lucene-spring</module>
+        <module>lucene-test</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${common-io.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-core</artifactId>
+                <version>${lucene.version}</version>
+            </dependency>
+
+            <!-- hive dependency -->
+            <dependency>
+                <groupId>org.apache.hive</groupId>
+                <artifactId>hive-exec</artifactId>
+                <!-- before version = 2.3.5 -->
+                <version>${hive-exec.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.commons</groupId>
+                        <artifactId>commons-compress</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-common</artifactId>
+                <version>${hadoop-common.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr4-runtime</artifactId>
+                <version>${antrl.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-mapreduce-client-core -->
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-mapreduce-client-core</artifactId>
+                <version>${hadoop-core.client.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.tika</groupId>
+                <artifactId>tika-parsers</artifactId>
+                <version>${kita.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.xerial</groupId>
+                <artifactId>sqlite-jdbc</artifactId>
+                <version>${sqlite-jdbc.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.pdfbox</groupId>
+                <artifactId>jbig2-imageio</artifactId>
+                <version>${jbig2-imageio.verion}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${springboot.dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler-plugin.version}</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${maven.compiler-plugin.source.version}</source>
+                    <target>${maven.compiler-plugin.source.version}</target>
                 </configuration>
             </plugin>
 
-
             <plugin>
-                <groupId>org.antlr</groupId>
-                <artifactId>antlr4-maven-plugin</artifactId>
-                <version>4.5.1</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${checkstyle.version}</version>
                 <executions>
                     <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <configuration>
+                            <configLocation>checkstyle/style.xml</configLocation>
+                            <encoding>UTF-8</encoding>
+                            <consoleOutput>true</consoleOutput>
+                            <failsOnError>true</failsOnError>
+                        </configuration>
                         <goals>
-                            <goal>antlr4</goal>
+                            <goal>check</goal>
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <visitor>true</visitor>
-                    <sourceDirectory>../jianshu/src/main/antlr4</sourceDirectory>
-                </configuration>
             </plugin>
         </plugins>
     </build>
 
-    <dependencies>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.6</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-core</artifactId>
-            <version>8.1.0</version>
-        </dependency>
-
-        <!-- hive dependency -->
-        <dependency>
-            <groupId>org.apache.hive</groupId>
-            <artifactId>hive-exec</artifactId>
-            <!-- before version = 2.3.5 -->
-            <version>1.2.1</version>
-        </dependency>
-
-
-        <!-- Why need add this config when chage hive-exec from 2.3.5 to 1.2.1 -->
-        <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-common</artifactId>
-            <version>2.6.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>antlr4-runtime</artifactId>
-            <version>4.5.1</version>
-        </dependency>
-
-    </dependencies>
-
-    
 </project>

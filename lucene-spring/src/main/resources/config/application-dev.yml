@@ -1,0 +1,7 @@
+server:
+  port: 9101
+
+
+#logging:
+#  config: logback.xml
+
