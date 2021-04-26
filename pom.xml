@@ -19,7 +19,7 @@
 
 
         <lucene.version>8.1.0</lucene.version>
-        <common-io.version>2.6</common-io.version>
+        <common-io.version>2.7</common-io.version>
         <hive-exec.version>1.2.1</hive-exec.version>
         <hadoop-common.version>2.6.0</hadoop-common.version>
         <antrl.version>4.5.1</antrl.version>
